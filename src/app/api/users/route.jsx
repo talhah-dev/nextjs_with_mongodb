@@ -1,19 +1,24 @@
 import { NextResponse } from "next/server";
-import User from "../../../../Models/User";
-import mongooseConnection from "../../../../lib/mongooseConnection";
+import User from '../../../../Models/User'
+import mongooseConnection from '../../../../lib/mongooseConnection'
 
 export async function POST(req) {
-    try {
-        await mongooseConnection()
-        const { name, email } = await req.json()
-        const user = new User({ name, email })
-        await user.save()
-        return NextResponse.json({ message: "User created successfully", user }, { status: 201 })
-    } catch (error) {
-        console.log(error)
-        return NextResponse.json({ message: "Internal server error" }, { status: 500 })
-    }
+  try {
+    await mongooseConnection()
+
+    const body = await req.json()
+    const { name, email } = body
+
+    const user = new User({ name, email })
+    await user.save()
+
+    return NextResponse.json({ message: 'User created', user }, { status: 201 })
+  } catch (err) {
+    console.error('❌ POST /api/users error:', err)
+    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+  }
 }
+
 
 export async function GET(req) {
     try {

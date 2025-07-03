@@ -1,7 +1,7 @@
-// lib/mongooseConnection.js
+// src/lib/mongooseConnection.js
 import mongoose from 'mongoose'
 
-export default async function mongooseConnection() {
+const mongooseConnection = async () => {
   if (mongoose.connection.readyState >= 1) return
 
   return mongoose.connect(process.env.MONGO_URI, {
@@ -9,3 +9,5 @@ export default async function mongooseConnection() {
     useUnifiedTopology: true,
   })
 }
+
+export default mongooseConnection
